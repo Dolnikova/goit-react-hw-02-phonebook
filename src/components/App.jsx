@@ -25,7 +25,11 @@ class App extends Component {
       number,
     };
 
-    if (contacts.some(({ name }) => name === contact.name)) {
+    if (
+      contacts.some(
+        ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
+      )
+    ) {
       alert(`Sorry, ${name} already exists`);
       return;
     }
@@ -41,7 +45,6 @@ class App extends Component {
       contact => contact.id !== contactId
     );
     this.setState({ contacts: visibleContacts });
-    return visibleContacts;
   };
 
   onFilter = filter => {
@@ -59,12 +62,20 @@ class App extends Component {
         <h2>Phonebook</h2>
         <ContactForm onSubmit={this.addNewContact} />
         <h2>Contacts</h2>
-        <Filter filter={filter} onFilter={this.onFilter} />
+        {contacts.length ? (
+          <Filter filter={filter} onFilter={this.onFilter} />
+        ) : (
+          ''
+        )}
 
-        <ContactList
-          contacts={visibleContacts}
-          deleteContact={this.deleteContact}
-        ></ContactList>
+        {contacts.length ? (
+          <ContactList
+            contacts={visibleContacts}
+            deleteContact={this.deleteContact}
+          />
+        ) : (
+          ''
+        )}
       </Container>
     );
   }
